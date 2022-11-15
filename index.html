@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	  <title>Server Fetch</title>
+	  <link rel="stylesheet" href="style.css">
+	</head>
+	<header>
+		<div class="container">
+          <div class="row">
+            <span class="text1"><h3>Welcome!</h3></span>
+            <span class="text2">to Vinolia's fetch App</span>
+          </div>
+        </div>
+	</header>
+	
+	<body>
+	 
+	    <button id="getData">Get data</button>
+		<button id="getList">Get list</button>
+		<br/><br/>
+		
+		<form id="myForm">
+		     <input type="text" name="firstname" id="firstname" value="Firstname">
+			 <input type="text" name="lastname" id="lastname" value="Lastname">
+			 <br/></br>
+			 <button id="submitForm">Submit</button>
+		</form>
+
+      <p id="posts"></p> 
+	  <p id="message"></p>
+	  <p id="greeting"></p>
+ 
+     <Script>
+	       document.getElementById("getData").addEventListener('click', getData);
+		   document.getElementById("getList").addEventListener('click', getList);
+		   document.getElementById("submitForm").addEventListener('click', submitForm);
+		   
+		   
+		   function getData(){
+			   
+			   fetch('https://mysite.itvarsity.org/api/fetch/get-data/')
+			        .then(function(response){
+                        return response.text();					
+					
+					})
+					.then(function(data){
+					    document.getElementById("message").innerHTML = data;
+					
+					})
+					
+			}
+		    function getList(){
+			
+			   fetch('https://mysite.itvarsity.org/api/fetch/get-list/')
+			        .then(function(response){
+					    return response.json();
+					
+					})
+					.then(function(data){
+					     var output = "<h1>Posts</h1>";
+						 
+						 for(a = 0; a < data.length; a++){
+						     output += `
+						        <ul>
+								   <li><h2>${data[a][0]}</h2></li>
+								   <li><b>${data[a][1]}</b></li>
+								   <li>${data[a][2]}</li>
+								</ul>
+								`
+						 }
+						  document.getElementById("posts").innerHTML = output;
+					})
+			}
+		    function submitForm(){
+			    e.preventDefault();
+				
+				form = new formData(document.querySelector("#myForm"));
+			    fetch('https://mysite.itvarsity.org/api/fetch/send-data/', {
+				       method: 'POST', 
+					   headers: {'Accept': 'application/json, */*'},
+					   body: form
+				
+				})
+				.then(function(response){
+				    return response.text();
+				
+				})
+				.then(function(data){
+				     document.getElementById("greeting").innerHTML = data;
+				
+				})
+			}
+	 </script>
+</body> 
+</html>
